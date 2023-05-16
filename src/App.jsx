@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useForm } from "./hooks/useForm";
 
 import "./App.css";
+import Success from "./components/Success";
 
 const formTemplate = {
   name: "",
@@ -22,13 +23,16 @@ function App() {
   const [data, setData] = useState(formTemplate);
 
   const updateFieldHandler = (key, value) => {
-    setData()
-  }
+    setData((prev) => {
+      return { ...prev, [key]: value };
+    });
+  };
 
   const formComponents = [
-    <UserForm data={data} />,
-    <ReviewForm data={data} />,
+    <UserForm data={data} updateFieldHandler={updateFieldHandler} />,
+    <ReviewForm data={data} updateFieldHandler={updateFieldHandler} />,
     <Thanks data={data} />,
+    <Success />,
   ];
 
   const { currentStep, currentComponent, changeStep, isFirstStep, isLastStep } =
@@ -49,7 +53,7 @@ function App() {
           <form onSubmit={(e) => changeStep(currentStep + 1, e)}>
             <div className="inputs-container">{currentComponent}</div>
             <div className="actions">
-              {!isFirstStep && (
+              {currentStep !== 0 && (
                 <button
                   type="button"
                   onClick={() => changeStep(currentStep - 1)}
@@ -58,17 +62,20 @@ function App() {
                   <span>Voltar</span>
                 </button>
               )}
-              {!isLastStep ? (
+              {currentStep === 0 || currentStep === 1 ? (
                 <button type="submit">
                   <span>Avançar</span>
                   <GrFormNext />
                 </button>
-              ) : (
-                <button type="button">
+              ) : currentStep === 2 ? (
+                <button
+                  type="button"
+                  onClick={() => changeStep(currentStep + 1)}
+                >
                   <span>Enviar</span>
                   <FiSend />
                 </button>
-              )}
+              ) : null}
             </div>
           </form>
         </div>

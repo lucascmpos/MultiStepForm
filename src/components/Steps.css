@@ -19,7 +19,7 @@
 
 .step{
     text-align: center;
-    background-color: white;
+    background-color: rgb(15, 15, 36);
     z-index: 1;
     width: 120px;
     padding: 0.5rem;
