@@ -1,6 +1,6 @@
 import React from "react";
 
-const UserForm = () => {
+const UserForm = ({data}) => {
   return (
     <>
       <div className="form-control">
